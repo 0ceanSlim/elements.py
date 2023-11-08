@@ -10,12 +10,12 @@ rpc_port = config["rpc_port"]
 rpc_user = config["rpc_user"]
 rpc_password = config["rpc_password"]
 
+# List available wallets
 try:
     rpc_connection = AuthServiceProxy(
         f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
     )
 
-    # List available wallets
     wallet_list = rpc_connection.listwallets()
 
     if not wallet_list:
@@ -41,18 +41,23 @@ try:
                 print("Invalid wallet selection. Exiting.")
                 exit()
 
-        # Get the list of transactions for the selected wallet
-        transactions = rpc_connection.listtransactions(wallet_name)
+    # Now that wallet_name is defined, proceed with the RPC connection
+    rpc_connection = AuthServiceProxy(
+        f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
+    )
 
-        if not transactions:
-            print(f"No transactions found for wallet '{wallet_name}'.")
-        else:
-            print(f"Transactions for wallet '{wallet_name}':")
-            for transaction in transactions:
-                print(f"Transaction ID: {transaction['txid']}")
-                print(f"Category: {transaction['category']}")
-                print(f"Amount: {transaction['amount']} {transaction['asset']}")
-                print(f"Confirmations: {transaction['confirmations']}\n")
+    # Get the list of transactions for the selected wallet
+    transactions = rpc_connection.listtransactions()
+
+    if not transactions:
+        print(f"No transactions found for wallet '{wallet_name}'.")
+    else:
+        print(f"Transactions for wallet '{wallet_name}':")
+        for transaction in transactions:
+            print(f"Transaction ID: {transaction['txid']}")
+            print(f"Category: {transaction['category']}")
+            print(f"Amount: {transaction['amount']} {transaction['asset']}")
+            print(f"Confirmations: {transaction['confirmations']}\n")
 
 except JSONRPCException as json_exception:
     print("A JSON RPC Exception occurred: " + str(json_exception))
