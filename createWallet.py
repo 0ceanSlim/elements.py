@@ -10,8 +10,8 @@ rpc_port = config["rpc_port"]
 rpc_user = config["rpc_user"]
 rpc_password = config["rpc_password"]
 
-# Wallet name to create
-wallet_name = "wallet_1"  # Specify the desired wallet name
+# Prompt the user for the wallet name
+wallet_name = input("Enter the wallet name to create: ")
 
 try:
     rpc_connection = AuthServiceProxy(

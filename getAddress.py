@@ -1,7 +1,7 @@
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import json
 
-## Read the RPC configuration from the configuration file
+# Read the RPC configuration from the configuration file
 with open("rpc_config.json", "r") as config_file:
     config = json.load(config_file)
 
@@ -21,30 +21,21 @@ try:
     if not wallet_list:
         print("No wallets found.")
     else:
-        if len(wallet_list) == 1:
-            # If there's only one wallet, use it
-            wallet_name = wallet_list[0]
+        print("Available wallets:")
+        for i, wallet in enumerate(wallet_list):
+            print(f"{i + 1}. {wallet}")
+
+        wallet_index = int(input("Enter the number of the wallet to get a new address for: ")) - 1
+
+        if 0 <= wallet_index < len(wallet_list):
+            wallet_name = wallet_list[wallet_index]
+
+            # Get a new address for the selected wallet
+            new_address = rpc_connection.getnewaddress(wallet_name)
+            print(f"New receiving address for wallet '{wallet_name}': {new_address}")
         else:
-            # If multiple wallets exist, prompt the user to select one
-            print("Available wallets:")
-            for i, wallet in enumerate(wallet_list):
-                print(f"{i + 1}. {wallet}")
-
-            wallet_index = (
-                int(input("Enter the number of the wallet to get a new address for: "))
-                - 1
-            )
-
-            if 0 <= wallet_index < len(wallet_list):
-                wallet_name = wallet_list[wallet_index]
-            else:
-                print("Invalid wallet selection. Exiting.")
-                exit()
-
-        # Get a new address for the selected wallet
-        new_address = rpc_connection.getnewaddress(wallet_name)
-
-        print(f"New receiving address for wallet '{wallet_name}': {new_address}")
+            print("Invalid wallet selection. Exiting.")
+            exit()
 
 except JSONRPCException as json_exception:
     print("A JSON RPC Exception occurred: " + str(json_exception))
