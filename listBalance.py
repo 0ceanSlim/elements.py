@@ -40,8 +40,13 @@ try:
                 print("Invalid wallet selection. Exiting.")
                 exit()
 
+        # Connect to the selected wallet by specifying the wallet file name
+        rpc_wallet_connection = AuthServiceProxy(
+            f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
+        )
+
         # List unspent transaction outputs (UTXOs)
-        utxos = rpc_connection.listunspent(0, 9999999, [], True)
+        utxos = rpc_wallet_connection.listunspent(0, 9999999, [], True)
 
         # Calculate asset balances
         asset_balances = {}
