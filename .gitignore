@@ -3,3 +3,4 @@ bfg.jar
 /build
 /dist
 *.spec
+__pycache__/
