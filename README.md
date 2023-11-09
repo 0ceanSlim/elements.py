@@ -24,20 +24,9 @@ git clone https://happytavern.co/oceanslim/elements.py.git
 cd elements.py
 ```
 
-## Configuration
+## Setup
 
-Create a configuration file, rpc_config.json, and specify your RPC credentials and node information:
-
-```bash
-{
-  "rpc_host": "xx.x.xx.xxx",
-  "rpc_port": 7041,
-  "rpc_user": "rpc_user",
-  "rpc_password": "rpc_password"
-}
-```
-
-Modify the scripts to read the RPC configuration from the rpc_config.json file. You can customize the configuration as needed.
+If you are on Windows and you're unsure if you have pyhton or not, run the exe located in this repository. This will run you though the setup. Alternatively, running `python setup.py` will run the same program for setting up your enviornment and rpc config json.  
 
 ## License
 
