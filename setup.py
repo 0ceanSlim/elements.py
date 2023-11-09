@@ -61,7 +61,9 @@ def main():
             "Do you have credentials for your Elements node RPC (yes/no)? "
         ).lower()
         if user_input == "no":
-            print("Please follow the instructions to set up an Elements node: [LINK]")
+            print(
+                "Please follow the instructions to set up an Elements node: [https://docs.liquid.net/docs/building-on-liquid]"
+            )
             sys.exit(1)
         elif user_input == "yes":
             get_rpc_config()
