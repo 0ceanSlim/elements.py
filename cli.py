@@ -1,5 +1,3 @@
-import argparse
-import sys
 import os
 
 def run_script(script_name):
@@ -11,35 +9,43 @@ def run_script(script_name):
     else:
         print(f"Error: {script_name} not found!")
 
+def help():
+    print("\nAvailable Commands:")
+    print("createWallet - Create a Wallet on your Elements Node")
+    print("newAddress - Prompts for wallet selection, then generates a new receiving address")
+    print("listTransactions - Prompts for wallet selection, then lists all the transactions made in the selected wallet")
+    print("listUnspent - Prompts for wallet selection, then lists the selected wallet's asset balances")
+    print("listWallets - Lists all the Wallets that exist on your Elements Node")
+    print("sendToAddress - Create and sign a new transaction to send assets from the selected Wallet")
+    print("help - Display available commands")
+    print("exit - Quit the program\n")
+
 def main():
-    parser = argparse.ArgumentParser(description="Elements Python Command Line Interfacce")
+    print("\nElements Python Command Line Interface")
+    help()
 
-    parser.add_argument("-createWallet", action="store_true", help="Create a Wallet on your Elements Node")
-    parser.add_argument("-newAddress", action="store_true", help="Prompts for wallet selection, then generates a new recieving address")
-    #parser.add_argument("-issueAsset", action="store_true", help="This script has not been tested will not prompt for input")
-    parser.add_argument("-listTransactions", action="store_true", help="Prompts for wallet selection, then lists all the transactions made in the selected wallet")
-    parser.add_argument("-listUnspent", action="store_true", help="Prompts for wallet selection, then lists the selected wallets asset balances")
-    parser.add_argument("-listWallets", action="store_true", help="Lists all the Wallets that exist on your Elements Node")
-    parser.add_argument("-sendToAddress", action="store_true", help="Create and sign a new transaction to send assets from the selected Wallet")
+    while True:
+        user_input = input("Enter a command: ")
 
-    args = parser.parse_args()
+        if user_input.lower() == 'exit':
+            break
 
-    if len(sys.argv) == 1:
-        parser.print_help()
-    elif args.createWallet:
-        run_script("createWallet")
-    elif args.newAddress:
-        run_script("getNewAddress")
-    elif args.listTransactions:
-        run_script("listTransactions")
-    elif args.listUnspent:
-        run_script("listUnspent")
-    elif args.listWallets:
-        run_script("listWallets")
-    elif args.sendToAddress:
-        run_script("sendToAddress")
-    else:
-        print("Error: Invalid command. Use -help for usage information.")
+        if user_input == 'createWallet':
+            run_script("createWallet")
+        elif user_input == 'newAddress':
+            run_script("getNewAddress")
+        elif user_input == 'listTransactions':
+            run_script("listTransactions")
+        elif user_input == 'listUnspent':
+            run_script("listUnspent")
+        elif user_input == 'listWallets':
+            run_script("listWallets")
+        elif user_input == 'sendToAddress':
+            run_script("sendToAddress")
+        elif user_input.lower() == 'help':
+            help()
+        else:
+            print("Error: Invalid command. Use 'help' to list commands.")
 
 if __name__ == "__main__":
     main()

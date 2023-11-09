@@ -1,2 +1,5 @@
 rpc_config.json
 bfg.jar
+/build
+/dist
+*.spec
