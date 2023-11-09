@@ -25,7 +25,9 @@ try:
         for i, wallet in enumerate(wallet_list):
             print(f"{i + 1}. {wallet}")
 
-        wallet_index = int(input("Enter the number of the wallet to get a new address for: ")) - 1
+        wallet_index = (
+            int(input("Enter the number of the wallet to get a new address for: ")) - 1
+        )
 
         if 0 <= wallet_index < len(wallet_list):
             wallet_name = wallet_list[wallet_index]
