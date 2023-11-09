@@ -11,12 +11,12 @@ rpc_user = config["rpc_user"]
 rpc_password = config["rpc_password"]
 
 try:
-    rpc_connection = AuthServiceProxy(
+    # Initial connection to list available wallets
+    rpc_connection_list_wallets = AuthServiceProxy(
         f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
     )
 
-    # List available wallets
-    wallet_list = rpc_connection.listwallets()
+    wallet_list = rpc_connection_list_wallets.listwallets()
 
     if not wallet_list:
         print("No wallets found.")
@@ -31,7 +31,7 @@ try:
                 print(f"{i + 1}. {wallet}")
 
             wallet_index = (
-                int(input("Enter the number of the wallet to send from: ")) - 1
+                int(input("Enter the number of the wallet to get a new address for: ")) - 1
             )
 
             if 0 <= wallet_index < len(wallet_list):
@@ -40,25 +40,14 @@ try:
                 print("Invalid wallet selection. Exiting.")
                 exit()
 
-        # Prompt the user for the receiving address
-        destination_address = input("Enter the receiving address: ")
+    # Connection to the specific wallet
+    rpc_connection = AuthServiceProxy(
+        f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
+    )
 
-        if not rpc_connection.validateaddress(destination_address)["isvalid"]:
-            print("Invalid destination address. Exiting.")
-            exit()
-
-        # Get the asset name you want to send
-        asset_name = input("Enter the asset name (e.g., demoasset): ")
-
-        # Get the amount to send
-        amount = float(input(f"Enter the amount of {asset_name} to send: "))
-
-        # Send the asset to the destination address
-        txid = rpc_connection.sendtoaddress(
-            destination_address, amount, asset_name, "", False, True, 1
-        )
-
-        print(f"Asset sent. Transaction ID: {txid}")
+    # Get a new address for the selected wallet
+    new_address = rpc_connection.getnewaddress()
+    print(f"New receiving address for wallet '{wallet_name}': {new_address}")
 
 except JSONRPCException as json_exception:
     print("A JSON RPC Exception occurred: " + str(json_exception))

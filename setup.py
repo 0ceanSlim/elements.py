@@ -52,25 +52,25 @@ def main():
     if not check_python_installation():
         install_python()
     else:
-        # Install python-bitcoinrpc
-        subprocess.run(["pip", "install", "python-bitcoinrpc"])
+        # Install requirements
+        subprocess.run(["pip", "install", "-r", "requirements.txt"])
 
     if not check_rpc_config():
         print("RPC config file not found.")
         user_input = input(
             "Do you have credentials for your Elements node RPC (yes/no)? "
         ).lower()
-        if user_input == "no":
+        if user_input in ["no", "n", "No", "N"]:
             print(
                 "Please follow the instructions to set up an Elements node: [https://docs.liquid.net/docs/building-on-liquid]"
             )
             sys.exit(1)
-        elif user_input == "yes":
+        elif user_input in ["yes", "y", "Yes", "Y"]:
             get_rpc_config()
         else:
-            print("Invalid input. Please enter 'yes' or 'no'.")
-
-    print("You are ready to proceed.")
+            print("Invalid input. Please enter 'y' or 'n'.")
+    else:
+        print("You are ready to proceed.")
 
 
 if __name__ == "__main__":
