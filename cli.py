@@ -3,6 +3,13 @@ import json
 import subprocess
 import sys
 
+def clear_console():
+    # Clear console based on the operating system
+    if os.name == 'nt':  # For Windows
+        os.system('cls')
+    else:  # For Unix/Linux/Mac
+        os.system('clear')
+
 def check_python_installation():
     try:
         python_version = subprocess.check_output(
@@ -67,6 +74,7 @@ def main():
     subprocess.run(["pip", "install", "-r", "requirements.txt"])
 
     while not check_rpc_config():
+        clear_console()
         print("RPC config file not found.")
         user_input = input(
             "Do you have credentials for your Elements node RPC (yes/no)? "
@@ -84,10 +92,11 @@ def main():
 
     print("You are ready to proceed.")
 
-    print("\nElements Python Command Line Interface")
-    help()
-
     while True:
+        clear_console()
+        print("\nElements Python Command Line Interface")
+        help()
+
         user_input = input("Enter a command: ")
 
         if user_input.lower() == 'exit':
