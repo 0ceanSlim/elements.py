@@ -2,17 +2,10 @@ from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import json
 import hashlib
 from getpass import getpass
+from util.rpcHandler import read_rpc_config, create_rpc_connection
 
-def get_rpc_credentials_from_file(filename='rpc_config.json'):
-    with open(filename, 'r') as config_file:
-        config = json.load(config_file)
-
-    rpc_host = config['rpc_host']
-    rpc_port = config['rpc_port']
-    rpc_user = config['rpc_user']
-    rpc_password = config['rpc_password']
-
-    return rpc_host, rpc_port, rpc_user, rpc_password
+# Read the RPC configuration from the configuration file
+rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
 
 def generate_contract():
     name = input("Enter the asset name: ")

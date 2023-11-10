@@ -1,14 +1,8 @@
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
-import json
+from util.rpcHandler import read_rpc_config, create_rpc_connection
 
 # Read the RPC configuration from the configuration file
-with open("rpc_config.json", "r") as config_file:
-    config = json.load(config_file)
-
-rpc_host = config["rpc_host"]
-rpc_port = config["rpc_port"]
-rpc_user = config["rpc_user"]
-rpc_password = config["rpc_password"]
+rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
 
 try:
     rpc_connection = AuthServiceProxy(
