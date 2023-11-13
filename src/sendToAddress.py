@@ -1,3 +1,6 @@
+## Last working script version
+## https://git.happytavern.co/OceanSlim/elements.py/src/commit/3eb6d6022418a349152a5c51464a0ac11d31fa9e/src/sendToAddress.py
+
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from util.rpcHandler import read_rpc_config, create_rpc_connection
 
@@ -52,12 +55,56 @@ try:
     # Get the amount to send
     amount = float(input(f"Enter the amount of {asset_name} to send: "))
 
-    # Send the asset to the destination address
-    txid = rpc_connection.sendtoaddress(
-        destination_address, amount, asset_name, "", False, True, 1
+    # Additional options
+    comment = input("Enter a comment for the transaction (optional): ")
+    comment_to = input("Enter a comment for the recipient (optional): ")
+    subtract_fee_from_amount = (
+        input("Subtract fee from amount? (true/false, optional): ").lower() == "true"
+    )
+    replaceable = (
+        input("Enable BIP125 replaceable? (true/false, optional): ").lower() == "true"
+    )
+    conf_target = int(input("Enter confirmation target in blocks (optional): ") or 0)
+    estimate_mode = (
+        input("Enter fee estimate mode (unset/economical/conservative, optional): ")
+        or "unset"
+    )
+    avoid_reuse = (
+        input("Avoid spending from dirty addresses? (true/false, optional): ").lower()
+        == "true"
+    )
+    asset_label = (
+        input("Enter hex asset id or asset label for balance (optional): ") or None
+    )
+    ignore_blind_fail = (
+        input("Ignore blinding failure? (true/false, optional): ").lower() == "true"
+    )
+    fee_rate = float(input("Enter fee rate in sat/vB (optional): ") or 0)
+    verbose = input("Enable verbose mode? (true/false, optional): ").lower() == "true"
+
+    # Build the transaction
+    tx_result = rpc_connection.sendtoaddress(
+        destination_address,
+        amount,
+        asset_name,
+        comment,
+        comment_to,
+        subtract_fee_from_amount,
+        replaceable,
+        conf_target,
+        estimate_mode,
+        avoid_reuse,
+        asset_label,
+        ignore_blind_fail,
+        fee_rate,
+        verbose,
     )
 
-    print(f"Asset sent. Transaction ID: {txid}")
+    if verbose:
+        print("Transaction Details:")
+        print(tx_result)
+    else:
+        print(f"Transaction sent. Transaction ID: {tx_result}")
 
 except JSONRPCException as json_exception:
     print("A JSON RPC Exception occurred: " + str(json_exception))
