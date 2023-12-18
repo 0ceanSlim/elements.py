@@ -1,5 +1,6 @@
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from util.rpcHandler import read_rpc_config, create_rpc_connection
+from mnemonic import Mnemonic
 
 # Read the RPC configuration from the configuration file
 rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
@@ -19,6 +20,15 @@ try:
     if wallet_name not in wallet_info:
         rpc_connection.createwallet(wallet_name)
         print(f"Wallet '{wallet_name}' created successfully.")
+
+        # Generate HD seed
+        mnemonic = Mnemonic("english")
+        seed_words = mnemonic.generate(256)  # 256 bits entropy for BIP39
+        print("Write down these seed words:")
+        print(seed_words)
+
+        # You might want to save or display these seed words securely for the user
+
     else:
         print(f"Wallet '{wallet_name}' already exists.")
 
