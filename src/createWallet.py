@@ -21,11 +21,16 @@ try:
         rpc_connection.createwallet(wallet_name)
         print(f"Wallet '{wallet_name}' created successfully.")
 
-        # Generate HD seed
-        mnemonic = Mnemonic("english")
-        seed_words = mnemonic.generate(256)  # 256 bits entropy for BIP39
-        print("Write down these seed words:")
-        print(seed_words)
+        # Prompt the user for seed phrase length preference
+        seed_length = input("Choose seed phrase length (12 or 24 words): ")
+        if seed_length == '12' or seed_length == '24':
+            entropy_bits = 128 if seed_length == '12' else 256
+            mnemonic = Mnemonic("english")
+            seed_words = mnemonic.generate(entropy_bits)
+            print("Write down these seed words:")
+            print(seed_words)
+        else:
+            print("Invalid choice. Please choose 12 or 24.")
 
         # You might want to save or display these seed words securely for the user
 

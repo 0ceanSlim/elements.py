@@ -20,6 +20,18 @@ Just run the `cli.exe` in the root directory of this repository. The program wil
 If you are on Linux or MacOS, you will need python installed before you can run cli.py
 You can download Python [Here](https://www.python.org/downloads/)
 
+## Flask App Development
+First install the requirements with 
+```bash
+pip install -r requirements.txt
+```
+Then from the root directory, run:
+```bash
+python -m flask --app .\app\app.py run
+``` 
+This will start the app @ http://127.0.0.1:5000
+
 ## License
 
-This repository is provided under the MIT License. Feel free to use, modify, and distribute these scripts as needed. Contributions and improvements are welcome. ❤️
+This repository is provided under the MIT License. Feel free to use, modify, and distribute these scripts as needed. Contributions and improvements are welcome. ❤️    
+See the [LICENSE](LICENSE) file for details.
