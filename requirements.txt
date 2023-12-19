@@ -1,3 +1,4 @@
 python-bitcoinrpc
 mnemonic
 flask
+jsonify
