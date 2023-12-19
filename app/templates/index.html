@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Wallet</title>
+    <!-- Add your CSS stylesheets here if any -->
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+<body>
+    <h1>Create a New Wallet</h1>
+    <form id="walletForm">
+        <label for="walletName">Wallet Name:</label>
+        <input type="text" id="walletName" name="walletName" required><br><br>
+        
+        <label for="seedLength">Choose Seed Phrase Length:</label>
+        <select id="seedLength" name="seedLength">
+            <option value="12">12 Words</option>
+            <option value="24">24 Words</option>
+        </select><br><br>
+        
+        <button type="submit">Create Wallet</button>
+    </form>
+
+    <div id="result"></div>
+
+    <!-- Add your JavaScript code here -->
+    <script>
+        document.getElementById('walletForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('/create_wallet', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
