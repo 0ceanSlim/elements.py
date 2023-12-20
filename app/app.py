@@ -1,7 +1,59 @@
 from flask import Flask, request, jsonify, render_template
-from ..src import create_wallet, generate_seed
+from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
+#from ..src.util.rpcHandler import read_rpc_config
+from mnemonic import Mnemonic
+#from ..src import create_wallet, generate_seed
+import json
 
 app = Flask(__name__)
+
+def read_rpc_config(filename="rpc_config.json"):
+    with open(filename, "r") as config_file:
+        config = json.load(config_file)
+
+    rpc_host = config["rpc_host"]
+    rpc_port = config["rpc_port"]
+    rpc_user = config["rpc_user"]
+    rpc_password = config["rpc_password"]
+
+    return rpc_host, rpc_port, rpc_user, rpc_password
+
+def create_rpc_connection(rpc_host, rpc_port, rpc_user, rpc_password):
+    rpc_url = f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
+    return AuthServiceProxy(rpc_url)
+
+
+# Function to create a wallet
+def create_wallet(wallet_name):
+    try:
+        rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
+        rpc_connection = AuthServiceProxy(f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}")
+
+        wallet_info = rpc_connection.listwallets()
+
+        if wallet_name not in wallet_info:
+            rpc_connection.createwallet(wallet_name)
+            return f"Wallet '{wallet_name}' created successfully."
+        else:
+            return f"Wallet '{wallet_name}' already exists."
+    except JSONRPCException as json_exception:
+        return "A JSON RPC Exception occurred: " + str(json_exception)
+    except Exception as general_exception:
+        return "An Exception occurred: " + str(general_exception)
+
+# Function to generate seed based on seed length
+def generate_seed(seed_length):
+    try:
+        if seed_length == "12" or seed_length == "24":
+            entropy_bits = 128 if seed_length == "12" else 256
+            mnemonic = Mnemonic("english")
+            seed_words = mnemonic.generate(entropy_bits)
+            return seed_words
+        else:
+            return "Invalid choice. Please choose 12 or 24."
+    except Exception as e:
+        return "An error occurred: " + str(e)
+
 
 @app.route('/')
 def show_wallet_form():
