@@ -31,6 +31,12 @@ python -m flask --app .\app\app.py run
 ``` 
 This will start the app @ http://127.0.0.1:5000
 
+
+Tailwind CSS is used to style the app. To update the style output, you need to run 
+```bash
+ tailwindcss -i app/static/style/input.css -o app/static/style/output.css --watch
+ ```
+
 ## License
 
 This repository is provided under the MIT License. Feel free to use, modify, and distribute these scripts as needed. Contributions and improvements are welcome. ❤️    
