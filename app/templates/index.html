@@ -5,22 +5,22 @@
     <link rel="stylesheet" type="text/css" href="../static/style/output.css" />
     <title>Create Wallet</title>
 </head>
-<body class="text-white bg-neutral-800 ">
-    <h1 class="font-bold">Create a New Wallet</h1>
+<body class="font-mono text-white bg-neutral-800">
+    <h1 class="mb-4 ml-4 text-xl font-bold">Create a New Wallet</h1>
     <form id="walletForm">
-        <label for="walletName">Wallet Name:</label>
-        <input type="text" id="walletName" name="walletName" required><br><br>
+        <label for="walletName" class="ml-4">Wallet Name:</label>
+        <input type="text" id="walletName" class="text-black rounded-sm" name="walletName" required><br><br>
         
-        <label for="seedLength">Choose Seed Phrase Length:</label>
-        <select id="seedLength" class="text-black" name="seedLength">
+        <label for="seedLength" class="ml-4">Choose Seed Phrase Length:</label>
+        <select id="seedLength" class="text-black rounded-sm" name="seedLength">
             <option value="12">12 Words</option>
             <option value="24">24 Words</option>
         </select><br><br>
         
-        <button type="submit">Create Wallet</button>
+        <button type="submit" class="p-2 ml-4 font-bold bg-green-600 rounded-sm hover:bg-green-800">Create Wallet</button>
     </form>
 
-    <div id="result"></div>
+    <div id="result" class="p-2 ml-4"></div>
 
     <!-- Add your JavaScript code here -->
     <script>
@@ -43,21 +43,21 @@
         });
     </script>
 
-    <h1 class="font-bold">RPC Configuration</h1>
+    <h1 class="mt-6 mb-4 ml-2 text-xl font-bold">RPC Configuration</h1>
 <form id="rpcConfigForm">
-    <label for="rpcHost">RPC Host:</label>
-    <input type="text" id="rpcHost" name="rpcHost" required><br><br>
+    <label for="rpcHost" class="ml-2">RPC Host:</label>
+    <input type="text" id="rpcHost" name="rpcHost" class="text-black rounded-sm" required><br><br>
 
-    <label for="rpcPort">RPC Port:</label>
-    <input type="text" id="rpcPort" name="rpcPort" required><br><br>
+    <label for="rpcPort" class="ml-2">RPC Port:</label>
+    <input type="text" id="rpcPort" name="rpcPort" class="text-black rounded-sm" required><br><br>
 
-    <label for="rpcUser">RPC User:</label>
-    <input type="text" id="rpcUser" name="rpcUser" required><br><br>
+    <label for="rpcUser" class="ml-2">RPC User:</label>
+    <input type="text" id="rpcUser" name="rpcUser" class="text-black rounded-sm" required><br><br>
 
-    <label for="rpcPassword">RPC Password:</label>
-    <input type="password" id="rpcPassword" name="rpcPassword" required><br><br>
+    <label for="rpcPassword" class="ml-2">RPC Password:</label>
+    <input type="password" id="rpcPassword" name="rpcPassword" class="text-black rounded-sm" required><br><br>
 
-    <button type="submit">Save Configuration</button>
+    <button type="submit" class="p-2 ml-2 font-bold bg-red-600 rounded-sm hover:bg-red-900">Save Configuration</button>
 </form>
 
 <div id="rpcResult"></div>
