@@ -1,11 +1,9 @@
 from flask import Flask, request, jsonify, render_template
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
-#from ..src.util.rpcHandler import read_rpc_config
 from mnemonic import Mnemonic
-#from ..src import create_wallet, generate_seed
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 def read_rpc_config(filename="../rpc_config.json"):
     with open(filename, "r") as config_file:

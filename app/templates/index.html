@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../static/style/output.css" />
-    <title>Create Wallet</title>
+    <title>Liquid Wallet</title>
 </head>
 <body class="font-mono text-white bg-neutral-800">
     <h1 class="mb-4 ml-4 text-xl font-bold">Create a New Wallet</h1>
@@ -21,28 +21,8 @@
     </form>
 
     <div id="result" class="p-2 ml-4"></div>
-
-    <!-- Add your JavaScript code here -->
-    <script>
-        document.getElementById('walletForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-
-            fetch('/create_wallet', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('result').innerHTML = data.message;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-    </script>
-
+    <script src="{{ url_for('static', filename='java/walletFormResponse.js') }}"></script>
+    
     <h1 class="mt-6 mb-4 ml-2 text-xl font-bold">RPC Configuration</h1>
 <form id="rpcConfigForm">
     <label for="rpcHost" class="ml-2">RPC Host:</label>
@@ -62,38 +42,6 @@
 
 <div id="rpcResult"></div>
 
-<!-- Add your JavaScript code here -->
-<script>
-    // Fetch the current RPC configuration on page load
-    fetch('/get_rpc_config')
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('rpcHost').value = data.rpcHost;
-        document.getElementById('rpcPort').value = data.rpcPort;
-        document.getElementById('rpcUser').value = data.rpcUser;
-        document.getElementById('rpcPassword').value = data.rpcPassword;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-    document.getElementById('rpcConfigForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-
-        fetch('/update_rpc_config', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('rpcResult').innerHTML = data.message;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-</script>
+<script src="{{ url_for('static', filename='java/rpcResult.js') }}"></script>
 </body>
 </html>
