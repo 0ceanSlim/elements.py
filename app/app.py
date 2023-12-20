@@ -7,7 +7,7 @@ import json
 
 app = Flask(__name__)
 
-def read_rpc_config(filename="rpc_config.json"):
+def read_rpc_config(filename="../rpc_config.json"):
     with open(filename, "r") as config_file:
         config = json.load(config_file)
 
@@ -70,6 +70,39 @@ def handle_generate_seed():
     seed_length = request.form['seedLength']
     result = generate_seed(seed_length)
     return jsonify({'seed': result})
+
+
+# Route to get the current RPC configuration
+@app.route('/get_rpc_config', methods=['GET'])
+def get_rpc_config():
+    rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
+    return jsonify({'rpcHost': rpc_host, 'rpcPort': rpc_port, 'rpcUser': rpc_user, 'rpcPassword': rpc_password})
+
+# Route to update the RPC configuration
+@app.route('/update_rpc_config', methods=['POST'])
+def update_rpc_config():
+    rpc_host = request.form['rpcHost']
+    rpc_port = request.form['rpcPort']
+    rpc_user = request.form['rpcUser']
+    rpc_password = request.form['rpcPassword']
+
+    # Update the RPC configuration file or database with the new values
+    # You may want to perform validation or error handling here
+
+    # For demonstration purposes, let's update the configuration and return success
+    try:
+        with open("../rpc_config.json", "w") as config_file:
+            config = {
+                "rpc_host": rpc_host,
+                "rpc_port": rpc_port,
+                "rpc_user": rpc_user,
+                "rpc_password": rpc_password
+            }
+            json.dump(config, config_file)
+        return jsonify({'message': 'RPC configuration updated successfully.'})
+    except Exception as e:
+        return jsonify({'message': f'Error updating RPC configuration: {str(e)}'})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

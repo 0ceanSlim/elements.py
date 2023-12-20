@@ -5,14 +5,14 @@
     <link rel="stylesheet" type="text/css" href="../static/style/output.css" />
     <title>Create Wallet</title>
 </head>
-<body>
+<body class="text-white bg-neutral-800 ">
     <h1 class="font-bold">Create a New Wallet</h1>
     <form id="walletForm">
         <label for="walletName">Wallet Name:</label>
         <input type="text" id="walletName" name="walletName" required><br><br>
         
         <label for="seedLength">Choose Seed Phrase Length:</label>
-        <select id="seedLength" name="seedLength">
+        <select id="seedLength" class="text-black" name="seedLength">
             <option value="12">12 Words</option>
             <option value="24">24 Words</option>
         </select><br><br>
@@ -42,5 +42,58 @@
             });
         });
     </script>
+
+    <h1 class="font-bold">RPC Configuration</h1>
+<form id="rpcConfigForm">
+    <label for="rpcHost">RPC Host:</label>
+    <input type="text" id="rpcHost" name="rpcHost" required><br><br>
+
+    <label for="rpcPort">RPC Port:</label>
+    <input type="text" id="rpcPort" name="rpcPort" required><br><br>
+
+    <label for="rpcUser">RPC User:</label>
+    <input type="text" id="rpcUser" name="rpcUser" required><br><br>
+
+    <label for="rpcPassword">RPC Password:</label>
+    <input type="password" id="rpcPassword" name="rpcPassword" required><br><br>
+
+    <button type="submit">Save Configuration</button>
+</form>
+
+<div id="rpcResult"></div>
+
+<!-- Add your JavaScript code here -->
+<script>
+    // Fetch the current RPC configuration on page load
+    fetch('/get_rpc_config')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('rpcHost').value = data.rpcHost;
+        document.getElementById('rpcPort').value = data.rpcPort;
+        document.getElementById('rpcUser').value = data.rpcUser;
+        document.getElementById('rpcPassword').value = data.rpcPassword;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    document.getElementById('rpcConfigForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch('/update_rpc_config', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('rpcResult').innerHTML = data.message;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
 </body>
 </html>
