@@ -1,6 +1,6 @@
 import json
 
-def read_rpc_config(filename="../rpc_config.json"):
+def read_rpc_config(filename="rpc_config.json"):
     with open(filename, "r") as config_file:
         config = json.load(config_file)
 
