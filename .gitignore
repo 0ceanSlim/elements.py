@@ -1,6 +1,7 @@
 rpc_config.json
 bfg.jar
-/build
-/dist
+build
+dist
 *.spec
 __pycache__/
+*.exe

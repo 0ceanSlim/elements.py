@@ -14,11 +14,17 @@ cd elements.py
 
 ## Usage
 
-**Windows**
-Just run the `cli.exe` in the root directory of this repository. The program will walk you through all the necessay steps to begin using the cli and when all requirements are met, the cli will load with initial instructions. 
+### Windows
+Download the latest cli.exe from the releases page of this repository and place it in the cli folder before running it. The exe will walk you through all the necessay steps to begin using the cli and when all requirements are met, the cli will load with initial instructions. 
 
 If you are on Linux or MacOS, you will need python installed before you can run cli.py
 You can download Python [Here](https://www.python.org/downloads/)
+
+### Running with Python (any system)
+**From the cli directory** run:
+```bash 
+python cli.py
+```
 
 ## Flask App Development
 First install the requirements with 

@@ -70,7 +70,7 @@ def main():
     while not check_python_installation():
         install_python()
 
-    subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    subprocess.run(["pip", "install", "-r", "../requirements.txt"])
 
     while not check_rpc_config():
         clear_console()

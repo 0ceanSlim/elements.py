@@ -1,20 +1,22 @@
 from flask import Flask, request, jsonify, render_template
+
+from src import create_wallet, read_rpc_config
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from mnemonic import Mnemonic
 import json
 
 app = Flask(__name__, static_folder='static')
 
-def read_rpc_config(filename="../rpc_config.json"):
-    with open(filename, "r") as config_file:
-        config = json.load(config_file)
-
-    rpc_host = config["rpc_host"]
-    rpc_port = config["rpc_port"]
-    rpc_user = config["rpc_user"]
-    rpc_password = config["rpc_password"]
-
-    return rpc_host, rpc_port, rpc_user, rpc_password
+#def read_rpc_config(filename="../rpc_config.json"):
+#    with open(filename, "r") as config_file:
+#        config = json.load(config_file)
+#
+#    rpc_host = config["rpc_host"]
+#    rpc_port = config["rpc_port"]
+#    rpc_user = config["rpc_user"]
+#    rpc_password = config["rpc_password"]
+#
+#    return rpc_host, rpc_port, rpc_user, rpc_password
 
 def create_rpc_connection(rpc_host, rpc_port, rpc_user, rpc_password):
     rpc_url = f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
@@ -22,22 +24,22 @@ def create_rpc_connection(rpc_host, rpc_port, rpc_user, rpc_password):
 
 
 # Function to create a wallet
-def create_wallet(wallet_name):
-    try:
-        rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
-        rpc_connection = AuthServiceProxy(f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}")
-
-        wallet_info = rpc_connection.listwallets()
-
-        if wallet_name not in wallet_info:
-            rpc_connection.createwallet(wallet_name)
-            return f"Wallet '{wallet_name}' created successfully."
-        else:
-            return f"Wallet '{wallet_name}' already exists."
-    except JSONRPCException as json_exception:
-        return "A JSON RPC Exception occurred: " + str(json_exception)
-    except Exception as general_exception:
-        return "An Exception occurred: " + str(general_exception)
+#def create_wallet(wallet_name):
+#    try:
+#        rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
+#        rpc_connection = AuthServiceProxy(f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}")
+#
+#        wallet_info = rpc_connection.listwallets()
+#
+#        if wallet_name not in wallet_info:
+#            rpc_connection.createwallet(wallet_name)
+#            return f"Wallet '{wallet_name}' created successfully."
+#        else:
+#            return f"Wallet '{wallet_name}' already exists."
+#    except JSONRPCException as json_exception:
+#        return "A JSON RPC Exception occurred: " + str(json_exception)
+#    except Exception as general_exception:
+#        return "An Exception occurred: " + str(general_exception)
 
 # Function to generate seed based on seed length
 def generate_seed(seed_length):
