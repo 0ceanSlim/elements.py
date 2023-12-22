@@ -1,47 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="../static/style/output.css" />
     <title>Liquid Wallet</title>
-</head>
-<body class="font-mono text-white bg-neutral-800">
+  </head>
+  <body class="font-mono text-white bg-neutral-800">
     <h1 class="mb-4 ml-4 text-xl font-bold">Create a New Wallet</h1>
     <form id="walletForm">
-        <label for="walletName" class="ml-4">Wallet Name:</label>
-        <input type="text" id="walletName" class="text-black rounded-sm" name="walletName" required><br><br>
-        
-        <label for="seedLength" class="ml-4">Choose Seed Phrase Length:</label>
-        <select id="seedLength" class="text-black rounded-sm" name="seedLength">
-            <option value="12">12 Words</option>
-            <option value="24">24 Words</option>
-        </select><br><br>
-        
-        <button type="submit" class="p-2 ml-4 font-bold bg-green-600 rounded-sm hover:bg-green-800">Create Wallet</button>
+      <label for="walletName" class="ml-4">Wallet Name:</label>
+      <input
+        type="text"
+        id="walletName"
+        class="text-black rounded-sm"
+        name="walletName"
+        required
+      /><br /><br />
+
+      <label for="seedLength" class="ml-4">Choose Seed Phrase Length:</label>
+      <select id="seedLength" class="text-black rounded-sm" name="seedLength">
+        <option value="12">12 Words</option>
+        <option value="24">24 Words</option></select
+      ><br /><br />
+
+      <button
+        type="submit"
+        class="p-2 ml-4 font-bold bg-green-600 rounded-sm hover:bg-green-800"
+      >
+        Create Wallet
+      </button>
     </form>
 
     <div id="result" class="p-2 ml-4"></div>
     <script src="{{ url_for('static', filename='java/walletFormResponse.js') }}"></script>
-    
+
     <h1 class="mt-6 mb-4 ml-2 text-xl font-bold">RPC Configuration</h1>
-<form id="rpcConfigForm">
-    <label for="rpcHost" class="ml-2">RPC Host:</label>
-    <input type="text" id="rpcHost" name="rpcHost" class="text-black rounded-sm" required><br><br>
+    <form id="rpcConfigForm">
+      <label for="rpcHost" class="ml-2">RPC Host:</label>
+      <input
+        type="text"
+        id="rpcHost"
+        name="rpcHost"
+        class="text-black rounded-sm"
+        required
+      /><br /><br />
 
-    <label for="rpcPort" class="ml-2">RPC Port:</label>
-    <input type="text" id="rpcPort" name="rpcPort" class="text-black rounded-sm" required><br><br>
+      <label for="rpcPort" class="ml-2">RPC Port:</label>
+      <input
+        type="text"
+        id="rpcPort"
+        name="rpcPort"
+        class="text-black rounded-sm"
+        required
+      /><br /><br />
 
-    <label for="rpcUser" class="ml-2">RPC User:</label>
-    <input type="text" id="rpcUser" name="rpcUser" class="text-black rounded-sm" required><br><br>
+      <label for="rpcUser" class="ml-2">RPC User:</label>
+      <input
+        type="text"
+        id="rpcUser"
+        name="rpcUser"
+        class="text-black rounded-sm"
+        required
+      /><br /><br />
 
-    <label for="rpcPassword" class="ml-2">RPC Password:</label>
-    <input type="password" id="rpcPassword" name="rpcPassword" class="text-black rounded-sm" required><br><br>
+      <label for="rpcPassword" class="ml-2">RPC Password:</label>
+      <input
+        type="password"
+        id="rpcPassword"
+        name="rpcPassword"
+        class="text-black rounded-sm"
+        required
+      /><br /><br />
 
-    <button type="submit" class="p-2 ml-2 font-bold bg-red-600 rounded-sm hover:bg-red-900">Save Configuration</button>
-</form>
+      <button
+        type="submit"
+        class="p-2 ml-2 font-bold bg-red-600 rounded-sm hover:bg-red-900"
+      >
+        Save Configuration
+      </button>
+    </form>
 
-<div id="rpcResult"></div>
+    <div id="rpcResult"></div>
 
-<script src="{{ url_for('static', filename='java/rpcResult.js') }}"></script>
-</body>
+    <script src="{{ url_for('static', filename='java/rpcResult.js') }}"></script>
+
+    <h1 class="mt-6 mb-4 ml-2 text-xl font-bold">Available Wallets</h1>
+    <div id="walletList" class="ml-4"></div>
+    <script>
+      // Fetch wallet list when the page loads
+      window.onload = function () {
+        fetch("/wallets")
+          .then((response) => response.json())
+          .then((data) => {
+            const walletList = document.getElementById("walletList");
+            if (data.wallets && data.wallets.length > 0) {
+              const wallets = data.wallets;
+              const walletsHTML = wallets
+                .map((wallet) => `<p>${wallet}</p>`)
+                .join("");
+              walletList.innerHTML = walletsHTML;
+            } else {
+              walletList.innerHTML = "<p>No wallets found.</p>";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching wallet list:", error);
+            const walletList = document.getElementById("walletList");
+            walletList.innerHTML = "<p>Error fetching wallets.</p>";
+          });
+      };
+    </script>
+  </body>
 </html>
