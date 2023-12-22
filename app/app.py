@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import json
 
-# from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
+from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 
 from src import create_wallet, read_rpc_config, generate_seed, list_wallets
 
@@ -28,26 +28,20 @@ def handle_generate_seed():
 
 
 @app.route("/wallets", methods=["GET"])
-
-# def list_wallets():
-#    try:
-#        rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
-#
-#        rpc_connection = AuthServiceProxy(
-#            f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
-#        )
-#
-#        wallet_list = rpc_connection.listwallets()
-#
-#        return render_template("wallets.html", wallets=wallet_list)
-#
-#    except JSONRPCException as json_exception:
-#        error_message = "A JSON RPC Exception occurred: " + str(json_exception)
-#        return render_template("error.html", error=error_message)
-#
-#    except Exception as general_exception:
-#        error_message = "An Exception occurred: " + str(general_exception)
-#        return render_template("error.html", error=error_message)
+def list_wallets():
+    try:
+        rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
+        rpc_connection = AuthServiceProxy(
+            f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
+        )
+        wallet_list = rpc_connection.listwallets()
+        return jsonify({"wallets": wallet_list})  # Return JSON response with wallets
+    except JSONRPCException as json_exception:
+        error_message = "A JSON RPC Exception occurred: " + str(json_exception)
+        return jsonify({"error": error_message})  # Return JSON error response
+    except Exception as general_exception:
+        error_message = "An Exception occurred: " + str(general_exception)
+        return jsonify({"error": error_message})  # Return JSON error response
 
 
 # Route to get the current RPC configuration

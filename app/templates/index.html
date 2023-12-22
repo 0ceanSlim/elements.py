@@ -86,29 +86,7 @@
 
     <h1 class="mt-6 mb-4 ml-2 text-xl font-bold">Available Wallets</h1>
     <div id="walletList" class="ml-4"></div>
-    <script>
-      // Fetch wallet list when the page loads
-      window.onload = function () {
-        fetch("/wallets")
-          .then((response) => response.json())
-          .then((data) => {
-            const walletList = document.getElementById("walletList");
-            if (data.wallets && data.wallets.length > 0) {
-              const wallets = data.wallets;
-              const walletsHTML = wallets
-                .map((wallet) => `<p>${wallet}</p>`)
-                .join("");
-              walletList.innerHTML = walletsHTML;
-            } else {
-              walletList.innerHTML = "<p>No wallets found.</p>";
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching wallet list:", error);
-            const walletList = document.getElementById("walletList");
-            walletList.innerHTML = "<p>Error fetching wallets.</p>";
-          });
-      };
-    </script>
+    <script src="{{ url_for('static', filename='java/walletList.js') }}"></script>
+
   </body>
 </html>
