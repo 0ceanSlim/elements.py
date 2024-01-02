@@ -1,9 +1,7 @@
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
-from src.read_rpc_config import read_rpc_config
 
-def create_wallet(wallet_name):
+def create_wallet(wallet_name, rpc_host, rpc_port, rpc_user, rpc_password):
     try:
-        rpc_host, rpc_port, rpc_user, rpc_password = read_rpc_config()
         rpc_connection = AuthServiceProxy(f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}")
 
         wallet_info = rpc_connection.listwallets()

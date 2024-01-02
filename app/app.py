@@ -1,9 +1,8 @@
 from flask import Flask, request, jsonify, render_template
-import json
 
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 
-from src import create_wallet, read_rpc_config
+from src import create_wallet
 
 app = Flask(__name__, static_folder="static")
 
@@ -22,8 +21,18 @@ def show_wallet_form():
 @app.route("/create_wallet", methods=["POST"])
 def handle_create_wallet():
     wallet_name = request.form["walletName"]
-    result = create_wallet(wallet_name)
+    
+    # Retrieve RPC credentials from localStorage (cookies)
+    rpc_host = request.cookies.get("rpcHost")
+    rpc_port = request.cookies.get("rpcPort")
+    rpc_user = request.cookies.get("rpcUser")
+    rpc_password = request.cookies.get("rpcPassword")
+
+    # Create wallet using retrieved RPC credentials
+    result = create_wallet(wallet_name, rpc_host, rpc_port, rpc_user, rpc_password)
+    
     return jsonify({"message": result})
+
 
 # Fetch wallets route using RPC credentials from localStorage
 @app.route("/wallets", methods=["GET"])
