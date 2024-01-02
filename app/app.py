@@ -89,5 +89,37 @@ def set_active_wallet():
 
 active_wallet = {}  # Store active wallets in memory
 
+@app.route("/delete_active_wallet", methods=["DELETE"])
+def delete_active_wallet():
+    global active_wallet  # Assuming active_wallet is a global variable
+
+    try:
+        # Retrieve the active wallet from the request data
+        wallet_name = request.json.get("walletName")
+
+        # Retrieve RPC credentials from localStorage (cookies)
+        rpc_host = request.cookies.get("rpcHost")
+        rpc_port = request.cookies.get("rpcPort")
+        rpc_user = request.cookies.get("rpcUser")
+        rpc_password = request.cookies.get("rpcPassword")
+
+        # Establish a connection to the Bitcoin node using RPC credentials
+        rpc_connection = AuthServiceProxy(
+            f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
+        )
+
+        # Unload the specified wallet from the node
+        rpc_connection.unloadwallet(wallet_name)
+
+        # Remove the wallet from active_wallet (if it's stored there)
+        if wallet_name in active_wallet:
+            del active_wallet[wallet_name]
+
+        return jsonify({"message": f"Deleted active wallet '{wallet_name}'"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
