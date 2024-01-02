@@ -12,8 +12,17 @@ function fetchWallets() {
           wallets.forEach(wallet => {
               const walletItem = document.createElement('div');
               walletItem.textContent = wallet;
-              walletItem.classList.add('wallet-item');
-
+              walletItem.classList.add(
+                'p-1', // Padding
+                'm-1', // Margin bottom
+                'cursor-pointer', // Cursor style
+                'hover:bg-blue-300', // Hover background color (change to suit your preference)
+                'w-fit',
+                'bg-blue-400',
+                'rounded-md',
+                'ml-2'
+              );
+            
               // Add event listener to set the wallet as active on click
               walletItem.addEventListener('click', () => setActiveWallet(wallet));
               

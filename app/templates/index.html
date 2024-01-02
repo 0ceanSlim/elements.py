@@ -85,8 +85,10 @@
     <script src="{{ url_for('static', filename='java/rpcResult.js') }}"></script>
 
     <h1 class="mt-6 mb-4 ml-2 text-xl font-bold">Available Wallets</h1>
-    <div id="walletList" class="ml-4"></div>
+    <div id="walletList"></div>
     <script src="{{ url_for('static', filename='java/fetchWallets.js') }}"></script>
-    <script src="{{ url_for('static', filename='java/setActiveWallet.js') }}"></script>
+    <div id="activeWalletDisplay" class="p-1 m-2 font-bold bg-green-600 rounded-md w-fit"></div>
+    <script src="{{ url_for('static', filename='java/activeWalletDisplay.js') }}"></script>
+
   </body>
 </html>
