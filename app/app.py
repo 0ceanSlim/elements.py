@@ -10,6 +10,38 @@ app = Flask(__name__, static_folder="static")
 def show_wallet_form():
     return render_template("index.html")
 
+# Route to get the current RPC configuration
+@app.route("/get_rpc_config", methods=["GET"])
+def get_rpc_config():
+    return jsonify(
+        {
+            "rpcHost": request.cookies.get("rpcHost"),
+            "rpcPort": request.cookies.get("rpcPort"),
+            "rpcUser": request.cookies.get("rpcUser"),
+            "rpcPassword": request.cookies.get("rpcPassword"),
+        }
+    )
+
+
+# Route to update the RPC configuration
+@app.route("/update_rpc_config", methods=["POST"])
+def update_rpc_config():
+    try:
+        # Extract RPC config from the POST request
+        rpc_host = request.form["rpcHost"]
+        rpc_port = request.form["rpcPort"]
+        rpc_user = request.form["rpcUser"]
+        rpc_password = request.form["rpcPassword"]
+
+        # Update localStorage with the new values
+        response = jsonify({"message": "RPC configuration updated successfully."})
+        response.set_cookie("rpcHost", value=rpc_host)
+        response.set_cookie("rpcPort", value=rpc_port)
+        response.set_cookie("rpcUser", value=rpc_user)
+        response.set_cookie("rpcPassword", value=rpc_password)
+        return response
+    except Exception as e:
+        return jsonify({"message": f"Error updating RPC configuration: {str(e)}"})
 
 @app.route("/create_wallet", methods=["POST"])
 def handle_create_wallet():
@@ -50,41 +82,12 @@ def list_wallets():
         error_message = "An Exception occurred: " + str(general_exception)
         return jsonify({"error": error_message})  # Return JSON error response
 
+@app.route("/set_active_wallet", methods=["POST"])
+def set_active_wallet():
+    wallet_name = request.form["walletName"]
+    return jsonify({"message": f"Active wallet set to '{wallet_name}'."})
 
-
-# Route to get the current RPC configuration
-@app.route("/get_rpc_config", methods=["GET"])
-def get_rpc_config():
-    return jsonify(
-        {
-            "rpcHost": request.cookies.get("rpcHost"),
-            "rpcPort": request.cookies.get("rpcPort"),
-            "rpcUser": request.cookies.get("rpcUser"),
-            "rpcPassword": request.cookies.get("rpcPassword"),
-        }
-    )
-
-
-# Route to update the RPC configuration
-@app.route("/update_rpc_config", methods=["POST"])
-def update_rpc_config():
-    try:
-        # Extract RPC config from the POST request
-        rpc_host = request.form["rpcHost"]
-        rpc_port = request.form["rpcPort"]
-        rpc_user = request.form["rpcUser"]
-        rpc_password = request.form["rpcPassword"]
-
-        # Update localStorage with the new values
-        response = jsonify({"message": "RPC configuration updated successfully."})
-        response.set_cookie("rpcHost", value=rpc_host)
-        response.set_cookie("rpcPort", value=rpc_port)
-        response.set_cookie("rpcUser", value=rpc_user)
-        response.set_cookie("rpcPassword", value=rpc_password)
-        return response
-    except Exception as e:
-        return jsonify({"message": f"Error updating RPC configuration: {str(e)}"})
-
+active_wallet = {}  # Store active wallets in memory
 
 if __name__ == "__main__":
     app.run(debug=True)
