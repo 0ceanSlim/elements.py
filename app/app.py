@@ -2,16 +2,9 @@ from flask import Flask, request, jsonify, render_template
 
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 
-from src import create_wallet
+from src import create_wallet, connect_to_node
 
 app = Flask(__name__, static_folder="static")
-
-# Function to establish an RPC connection to the Bitcoin node
-def connect_to_node(rpc_host, rpc_port, rpc_user, rpc_password):
-    rpc_connection = AuthServiceProxy(
-        f"http://{rpc_user}:{rpc_password}@{rpc_host}:{rpc_port}"
-    )
-    return rpc_connection
 
 @app.route("/")
 def show_wallet_form():
