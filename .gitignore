@@ -4,4 +4,4 @@ build
 dist
 *.spec
 __pycache__/
-*.exe
+*.exe.gnostr
